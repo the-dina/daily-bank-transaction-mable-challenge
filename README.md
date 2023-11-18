@@ -7,6 +7,7 @@ Link to the [challenge.](challenge.md)
 - rspec
 - Rubymine debugging related gems
 - pry and pry-byebug
+- simplecov (for test coverage)
 
 ## How to run the app
 ```
@@ -35,6 +36,11 @@ From: 1111234522221234, To: 1212343433335665, Amount: 25.60, Status: PROCESSED
 ```
 rspec ./spec/
 ```
+
+__How to Check The Test Coverage__
+- run `rspec ./spec/` 
+- run `open coverage/index.html` to open the html report
+
 
 ## App's structure
 ```
