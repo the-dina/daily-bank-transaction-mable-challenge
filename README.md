@@ -1,18 +1,25 @@
 # Daily Bank Transaction - Mable Challenge
 
-## The challenge
-Link to the [challenge.](challenge.md)
+## The Challenge
+Link to the [challenge description](challenge.md) for more details.
 
-## Installed gems
-- rspec
-- Rubymine debugging related gems
-- pry and pry-byebug
-- simplecov (for test coverage)
+## Installed Gems
+- `rspec` - A testing tool for Ruby.
+- `pry` and `pry-byebug` - Interactive debugging tools.
+- `simplecov` - Used for measuring test coverage.
 
-## How to run the app
+## Run Without Local Setup
+To run the app in an environment other than your local setup, it functions seamlessly in the default container of GitHub Codespaces. Ruby is pre-installed, so simply use the following button to create a Codespace, which takes about a minute to set up. Then, run `bundle` to install dependencies.
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/the-dina/daily-bank-transaction-mable-challenge)
+
+## How to Run the App
+Execute the following command to start the application:
 ```
 ruby app.rb ./data/accounts.csv ./data/transaction_requests.csv
 ```
+This will process the transactions as per the data in the provided CSV files and display the final state of accounts and transaction requests.
+
 
 Result will be:
 ```
@@ -32,17 +39,48 @@ From: 3212343433335755, To: 1111234522226789, Amount: 320.50, Status: PROCESSED
 From: 1111234522221234, To: 1212343433335665, Amount: 25.60, Status: PROCESSED
 ```
 
-## How to run the specs(tests)
+## How to Run the Specs (Tests)
+Run the tests using RSpec to ensure the application is functioning correctly:
 ```
 rspec ./spec/
 ```
 
-__How to Check The Test Coverage__
-- run `rspec ./spec/` 
-- run `open coverage/index.html` to open the html report
+## Checking Test Coverage
+To assess test coverage:
+- Run `rspec ./spec/`
+- Open `coverage/index.html` in a web browser to view the detailed coverage report.
+
+## Single Responsibility Principle
+This application is designed with the Single Responsibility Principle in mind. Each component has a specific role:
+- `Models` handle data representation.
+- `Repositories` are responsible for data storage.
+- `Services` manage business logic.
+- `App Controller` orchestrates the interaction between these components.
+
+## Dependency Injection
+Dependencies in services are injected through their constructors, promoting flexibility and ease of testing. An IoC (Inversion of Control) Container is implemented in the `lib` directory, which is utilized by `app_controller` to manage dependencies.
+
+## Transaction Request vs Transaction
+
+### Transaction Request
+A `transaction_request` represents the initial data we receive from the CSV file. This data indicates a desire to transfer funds from a source account to a destination account. However, not all transaction requests are guaranteed to be processed successfully.
+
+### Transaction
+When a `transaction_request` is processed successfully, a `transaction` is created. This transaction reflects the successful transfer of funds between accounts.
+
+### Failed Transaction Requests
+There are scenarios where a transaction request might fail. In such cases, the status of the `transaction_request` is updated to 'failed', and this is reflected in the console output. The reasons for a transaction request failing include:
+
+1. **Invalid Source Account**: The account from which funds are to be transferred does not exist or is not recognized.
+2. **Invalid Destination Account**: The account to which funds are to be transferred is invalid or unrecognized.
+3. **Insufficient Funds in Source Account**: The source account does not have enough funds to complete the transaction.
+
+### Testing and Handling Failures
+Although the provided CSV files contain only successful transaction scenarios (the happy path), the robustness of the application is ensured through extensive testing. Both `transaction_service` and `app_controller` tests confirm that invalid transaction requests are handled appropriately, ensuring reliability and accuracy in transaction processing.
 
 
-## App's structure
+## Application Structure
+
 ```
 banking_system/
 │

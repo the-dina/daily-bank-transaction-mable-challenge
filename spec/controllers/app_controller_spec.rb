@@ -89,20 +89,25 @@ RSpec.describe AppController do
       it "marks bad transaction requests as failed" do
         transaction_requests = container.resolve(:transaction_request_repository).all_requests
 
-        expect(transaction_requests.length).to eq(3) # Assuming 3 bad transactions in the file
+        expect(transaction_requests.length).to eq(3)
 
+        # source_account doesn't exist
         expect(transaction_requests[0]).to have_attributes(
           source_account: "9999999999999999",
           destination_account: "1111222233334444",
           amount: 1000.00,
           status: "failed",
         )
+
+        # destination doesn't exist
         expect(transaction_requests[1]).to have_attributes(
           source_account: "1234567890123456",
           destination_account: "9999999999999999",
           amount: 1000.00,
           status: "failed",
         )
+
+        # source account doesn't have enough fund
         expect(transaction_requests[2]).to have_attributes(
           source_account: "1234567890123456",
           destination_account: "1111222233334444",
